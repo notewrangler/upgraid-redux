@@ -2,8 +2,9 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Component, PropTypes} from 'react';
 import {inputStyles, BUTTON_STYLES} from 'helpers/styles';
-import {setCurrentUserInput, toggleshowModal} from 'actions/ui';
-import {createUser} from 'actions/data/users';
+import {setCurrentUserName}from 'actions/users';
+import {setCurrentPassword} from 'actions/users';
+import {loginUser} from 'actions/users';
 
 let styles = {
   title: {
@@ -19,9 +20,10 @@ let styles = {
 
 class Login extends Component {
   static propTypes = {
-    currentUserInput: PropTypes.string.isRequired,
-    setCurrentUserInput: PropTypes.func.isRequired,
-    toggleshowModal: PropTypes.func.isRequired,
+    currentUserName: PropTypes.string.isRequired,
+		currentPassword: PropTypes.string.isRequired,
+    setCurrentUserName: PropTypes.func.isRequired,
+		setCurrentPassword: PropTypes.func.isRequired,
     loginUser: PropTypes.func.isRequired
   }
 
@@ -30,27 +32,28 @@ class Login extends Component {
   }
 
   render() {
-    let {currentUserInput, setCurrentUserInput} = this.props;
+    let {currentUserName, setCurrentUserName, currentPassword, setCurrentPassword} = this.props;
     return (
       <div>
         <div style={styles.title}>
-          Join Hipslack so you can chat!
+          Welcome to UpgrAID - Please Login or Register
         </div>
         <input
           autoFocus={true}
           placeholder="Username"
           onBlur={() => this.setState({focused: false})}
           onFocus={() => this.setState({focused: true})}
-          onChange={(event) => setCurrentUserInput(event.currentTarget.value)}
+          onChange={(event) => setCurrentUserName(event.currentTarget.value)}
           style={inputStyles(this.state.focused)}
-          value={currentUserInput}
+          value={currentUserName}
         />
 				<input
 					type='password'
 					placeholder="Password"
 					onBlur={() => this.setState({focused: false})}
 					onFocus={() => this.setState({focused: true})}
-					onChange={(event) => setCurrentUserPassword(event.currentTarget.value)}
+					onChange={(event) => setCurrentPassword(event.currentTarget.value)}
+          style={inputStyles(this.state.focused)}
 				/>
         <button style={styles.button} onClick={::this.handleClick}>
           Log In
@@ -60,26 +63,26 @@ class Login extends Component {
   }
 
   handleClick() {
-    let {loginUser, currentUserInput, setCurrentUserInput, setCurrentUserPassword} = this.props;
-    createUser(currentUserInput);
-    setCurrentUserInput('');
-    toggleshowModal(false);
+    let {loginUser, currentUserName, currentPassword, setCurrentUserName, setCurrentPassword} = this.props;
+    loginUser(currentUserName, currentPassword);
+    setCurrentUserName('');
+    setCurrentPassword('');
   }
 }
 
 function select(state) {
   return {
-    currentUserInput: state.ui.currentUserInput,
-		currentUserPassword: state.login.currentUserPassword
+    currentUserName: state.login.currentUserName,
+		currentPassword: state.login.currentPassword
   };
 }
 
 function actions(dispatch) {
   return bindActionCreators({
-    setCurrentUserInput: setCurrentUserInput,
-    setCurrentUserPassword: setCurrentUserPassword,
+    setCurrentUserName: setCurrentUserName,
+    setCurrentPassword: setCurrentPassword,
     loginUser: loginUser
   }, dispatch);
 }
 
-export default connect(select, actions)(CurrentUserInput);
+export default connect(select, actions)(Login);

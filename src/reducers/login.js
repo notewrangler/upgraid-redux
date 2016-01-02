@@ -1,12 +1,25 @@
-export function token(state='', {type, payload}) {
+export function currentToken(state='', {type, payload}) {
   switch (type) {
-  case 'GET_TOKEN_SUCCEEDED':
-    return {...state, ...payload.json};
-  case 'CREATE_USER_INITIATED':
-    return {...state, optimistic: {name: payload.name, lastSeen: payload.lastSeen}};
-  case 'CREATE_USER_SUCCEEDED':
-    const {optimistic, ...oldState} = state;
-    return {...oldState, [payload.json.name]: optimistic};
+  case 'LOGIN_USER_SUCCEEDED':
+    return payload.token;
+  default:
+    return state;
+  }
+}
+
+export function currentUserName(state='', {type, payload}) {
+  switch (type) {
+  case 'SET_CURRENT_USERNAME':
+    return payload.username;
+  default:
+    return state;
+  }
+}
+
+export function currentPassword(state='', {type, payload}) {
+  switch (type) {
+  case 'SET_CURRENT_PASSWORD':
+    return payload.password;
   default:
     return state;
   }

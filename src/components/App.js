@@ -1,11 +1,12 @@
 import {Component} from 'react';
+import Login from 'components/login';
 
 class App extends Component {
   render() {
-    return (
+    return (      
       <div>
-        <h1>Hello World!</h1>
-        <p>This is the starter es6-project.</p>
+        <h1>First Page</h1>
+        <Login />
       </div>
     );
   }

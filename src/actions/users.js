@@ -1,16 +1,30 @@
 import {url} from 'helpers/network';
+import $ from 'jquery';
 
-nction loginUserInitiated(username, password) {
+export function setCurrentUserName(username) {
   return {
-    type: 'LOGIN_USER_INITIATED',
-    payload: {username: username, password: password}
+    type: 'SET_CURRENT_USERNAME',
+    payload: {username: username}
   };
 }
 
-function loginUserSucceeded(json) {
+export function setCurrentPassword(password) {
+  return {
+    type: 'SET_CURRENT_PASSWORD',
+    payload: {password: password}
+  };
+}
+
+function loginUserInitiated() {
+  return {
+    type: 'LOGIN_USER_INITIATED'
+  };
+}
+
+function loginUserSucceeded(token) {
   return {
     type: 'LOGIN_USER_SUCCEEDED',
-    payload: {json: json}
+    payload: {token: token}
   };
 }
 
@@ -23,17 +37,16 @@ function loginUserFailed(response) {
 
 export function loginUser(username, password) {
   return (dispatch) => {
-    dispatch(createUserInitiated(username, password));
-    fetch(url('api-token-auth'), {
-      method: 'post',
-      body: JSON.stringify({username: username, password: password})
-    }).then((response) => {
-      if (response.ok) {
-        response.json().then((json) => {
-          dispatch(createUserSucceeded(json));
-        });
+    dispatch(loginUserInitiated());
+    $.ajax({
+			url:'https://safe-brook-9891.herokuapp.com/api/api-token-auth/',
+			method:'post',
+			data: {username: username, password:password}
+		}).then(function(response){
+      if (response.token) {
+        dispatch(loginUserSucceeded(response.token));
       } else {
-        dispatch(createUserFailed(response));
+        dispatch(loginUserFailed(response));
       }
     });
   };
