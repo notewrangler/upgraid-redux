@@ -1,5 +1,7 @@
-import {url} from 'helpers/network';
 import $ from 'jquery';
+import {url} from 'helpers/network';
+import history from 'helpers/history';
+import Routes from '../Routes';
 
 export function setCurrentUserName(username) {
   return {
@@ -45,6 +47,7 @@ export function loginUser(username, password) {
 		}).then(function(response){
       if (response.token) {
         dispatch(loginUserSucceeded(response.token));
+        history.push('profile');
       } else {
         dispatch(loginUserFailed(response));
       }
