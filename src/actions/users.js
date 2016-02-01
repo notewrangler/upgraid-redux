@@ -43,7 +43,7 @@ export function loginUser(username, password) {
     $.ajax({
 			url:'https://safe-brook-9891.herokuapp.com/api/api-token-auth/',
 			method:'post',
-			data: {username: username, password:password}
+			data: {username: username, password: password}
 		}).then(function(response){
       if (response.token) {
         dispatch(loginUserSucceeded(response.token));

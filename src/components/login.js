@@ -2,7 +2,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Component, PropTypes} from 'react';
 import {inputStyles, BUTTON_STYLES} from 'helpers/styles';
-import {setCurrentUserName}from 'actions/users';
+import {setCurrentUserName} from 'actions/users';
 import {setCurrentPassword} from 'actions/users';
 import {loginUser} from 'actions/users';
 
@@ -38,6 +38,7 @@ class Login extends Component {
         <div style={styles.title}>
           Welcome to UpgrAID - Please Login or Register
         </div>
+
         <input
           autoFocus={true}
           placeholder="Username"
@@ -45,16 +46,16 @@ class Login extends Component {
           onFocus={() => this.setState({focused: true})}
           onChange={(event) => setCurrentUserName(event.currentTarget.value)}
           style={inputStyles(this.state.focused)}
-          value={currentUserName}
-        />
+          value={currentUserName} />
+
 				<input
 					type='password'
 					placeholder="Password"
 					onBlur={() => this.setState({focused: false})}
 					onFocus={() => this.setState({focused: true})}
 					onChange={(event) => setCurrentPassword(event.currentTarget.value)}
-          style={inputStyles(this.state.focused)}
-				/>
+          style={inputStyles(this.state.focused)}/>
+          
         <button style={styles.button} onClick={::this.handleClick}>
           Log In
         </button>
